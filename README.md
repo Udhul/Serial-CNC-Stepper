@@ -5,10 +5,10 @@ This project aims to showcase how a simple CNC router can be built using a micro
 ## Introduction to Basic CNC Systems
 A CNC (Computer Numeric Control) machine is a type of machine that can move according to absolute or incremental coordinates and perform certain actions on the given location or on-route between two sets of coordinates. CNC machines are used in various applications, including CNC routers, 3D printers, laser cutters, and more.
 
-The coordinate instructions for CNC systems are typically stored in a file called gcode, and the main control logic is responsible for converting these coordinates to machine instructions. In simple CNC systems, the main control logic may be software-based, and the hardware side of the CNC machine does not have a buffer to store the whole gcode. As a result, these systems rely on external devices that can store, translate, and communicate the content of the gcode to the logical CNC controller.
+The coordinate instructions for CNC systems are typically stored in a file called G-code, and the main control logic is responsible for converting these coordinates to machine instructions. In simple CNC systems, the main control logic may be software-based, and the hardware side of the CNC machine does not have a buffer to store the whole G-code. As a result, these systems rely on external devices that can store, translate, and communicate the content of the G-code to the logical CNC controller.
 
 ### Communication and Translation
-In many cases, the gcode is stored on a PC and loaded through a trajectory planner. The trajectory planner has information about the machine's physical setup, steps/unit, acceleration curves, input/output devices, etc. It also keeps track of current axes locations and I/O states. The motors used in CNC systems are typically stepper motors, which move one step at a time in the desired rotary direction.
+In many cases, the G-code is stored on a PC and loaded through a trajectory planner. The trajectory planner has information about the machine's physical setup, steps/unit, acceleration curves, input/output devices, etc. It also keeps track of current axes locations and I/O states. The motors used in CNC systems are typically stepper motors, which move one step at a time in the desired rotary direction.
 
 ### Traditional Parallel Stepping
 In the traditional approach of CNC systems, the motion instructions are communicated through a parallel port (such as the old printer port) in real-time. Typically, there will be three pins per axis: Step, Direction, Enable. These pins are switched according to the desired motion. For example, for the X-axis, the direction pin can be set to positive, and then 200 steps can be sent out on the step pin over the course of one second. This means that a typical stepper motor will move one whole rotation in one second.
@@ -23,10 +23,10 @@ The traditional parallel stepping approach has several drawbacks, including:
 * The parallel port is highly susceptible to noise, and there is no acknowledgement of sent/received information. The logical state of pins in the parallel port is fragile. Therefore, noise can induce unwanted steps or cause steps to be lost.
 * When stepping at higher speeds, the logical readout is being smoothed, which can cause logical states to become blurred and unreadable by the receiving motorcontroller.
 
-## Serial-CNC-Stepper Project:
+## Serial-CNC-Stepper Project
 This project showcases a CNC system with an alternative communication form between the PC and the motion controller. Instead of using the printer port, serial communication is used between the PC and the control logic. This approach replaces real-time stepping with one-line-at-a-time execution.
 
-### System Components:
+### System Components
 The system components for this CNC system are:
 1. PC
 2. AtMega328PU MCU (Microcontroller Unit) - the main control logic
@@ -36,7 +36,7 @@ The system components for this CNC system are:
 
 <img src="https://user-images.githubusercontent.com/126940798/222947505-961e6c68-5332-4232-bf7a-ee2d3f197f2e.png" width="33%" height="33%">
 
-### How it Works:
+### How it Works
 The project involves adding a microcontroller (AtMega328PU) between the PC and the motor controllers to control the stepper motors. The PC acts as the trajectory planner, where the gcode is loaded, and information on motor steps/unit and current positions is stored. When a line of gcode is read, the PC converts the coordinates into machine instructions (step, direction, enable, spindle) for controlling the stepper motors. This information is then encoded into two bytes and sent serially to the AtMega328PU MCU via the PC's RS232 interface. The information is encoded as shown below:
 
 <img width="337" alt="bit pattern" src="https://user-images.githubusercontent.com/126940798/222958688-9ea429d8-cb34-4651-b063-d3de79c442df.png">
@@ -50,7 +50,7 @@ The L297 motor controller generates high-low patterns to switch the motor coils 
 (Source: https://www.st.com/en/motor-drivers/l297.html)
 
 
-### Benefits:
+### Benefits
 The approach used in this project has several benefits over traditional parallel stepping, including:
 * Serial communication is more readily available on modern PCs and laptops.
 * Serial communication has higher bandwidth than the parallel printer port, allowing for more steps to be executed per second on higher resolution machines.
@@ -63,7 +63,7 @@ One limitation of this approach is that the AtMega328PU MCU has limited output p
 <img width="400" src="https://user-images.githubusercontent.com/126940798/222950187-8206b198-2d66-490a-9d16-d8c251ed5831.png">
 
 
-### Conclusion:
+### Conclusion
 The Serial-CNC-Stepper project showcases how a simple CNC router can be built with an alternative communication form that replaces traditional parallel stepping with serial communication and one-line-at-a-time execution. This approach offers several benefits over traditional parallel stepping, including greater availability, higher bandwidth, and greater robustness against noise and errors.
 
 
