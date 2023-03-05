@@ -5,11 +5,11 @@
 
 //--------------------------DEFINES--------------------------//
 // Frequency defines:
-#define F_CPU				14745600UL
+#define F_CPU							14745600UL
 #define UART_BAUD_RATE		115200
 
 // ENDSTOP defines:
-#define ENDSTOP		PIND		  // End-stop readin on Port D (Input)
+#define ENDSTOP PIND		  	// End-stop readin on Port D (Input)
 #define XEND		0b00010000	// XEND input on PIN 4
 #define YEND		0b00100000	// YEND input on PIN 5
 #define ZEND		0b01000000	// ZEND input on PIN 6
@@ -24,14 +24,14 @@
 #define	TPIN		  0b00100000	// Toggle pin for router-spindle
 
 // Step pulse width:
-#define STEPPULSE	5			  // Step pulse time (µs). Clock time > 0.5 µs (see L297 datasheet p. 7)	
-#define STEPTIME	1900		// Step time hold (between steps) (µs)
+#define STEPPULSE	5			  		// Step pulse time (µs). Clock time > 0.5 µs (see L297 datasheet p. 7)	
+#define STEPTIME	1900				// Step time hold (between steps) (µs)
 //-----------------------------------------------------------//
 
 //--------------------------INCLUDES--------------------------//
-#include <avr/interrupt.h>  // Dependency comes with AVR Studio
-#include <util/delay.h>     // Dependency comes with AVR Studio
-#include "uart.h"           // Serial uart communication uses the dependency library (v 1.12) by Peter Fleury 
+#include <avr/interrupt.h>  	// Dependency comes with AVR Studio
+#include <util/delay.h>     	// Dependency comes with AVR Studio
+#include "uart.h"           	// Serial uart communication uses the dependency library (v 1.12) by Peter Fleury 
 //------------------------------------------------------------//
 
 //--------------------------Variable--------------------------//
@@ -80,7 +80,7 @@ char uart_recieve()           // Get instructions via uart serial communication
 				// Return the error code to the PC
 				uart_putc(0xA3);
 			}
-			newdata=1;                      // If these error checks are passed, there's new data. Set the newdata flag high
+			newdata=1; 											// If these error checks are passed, there's new data. Set the newdata flag high
 			return r;	                      // Success. Return the received data
 		}
 }
@@ -88,16 +88,16 @@ char uart_recieve()           // Get instructions via uart serial communication
 void receive_data()                   // Recieve data function: Calls the uart multiple times and merges data until theres two valid bytes of data recieved
 {
 	//---------- Wait for two bytes to be received ---------- //
-	while (newdata==0)			// Wait for first byte
+	while (newdata==0)									// Wait for first byte
 	{
 		c[0] = uart_recieve();
 	}
-	newdata=0;					// c[0] is read in. Set the newdata flag low to get next byte
-	while (newdata==0)			// Wait for c[1] to be read in
+	newdata=0;													// c[0] is read in. Set the newdata flag low to get next byte
+	while (newdata==0)									// Wait for c[1] to be read in
 	{
 		c[1] = uart_recieve();
 	}
-	newdata=0;					// c[1] is read in and the newdata flag is set low again. End of routine
+	newdata=0;													// c[1] is read in and the newdata flag is set low again. End of routine
 }
 
 void read_data()
@@ -164,11 +164,11 @@ void step()
 		_delay_us(STEPTIME);
 	}
 	
-	STEPPORT &= ~XPIN;			// When all steps are executed on the axis, set all enable pins low again
+	STEPPORT &= ~XPIN; 			// When all steps are executed on the axis, set all enable pins low again
 	STEPPORT &= ~YPIN;
 	STEPPORT &= ~ZPIN;
 	
-	uart_putc(0xAA);			// Send a message to the PC that all steps have been executed, meaning we are ready for new instructions
+	uart_putc(0xAA);				// Send a message to the PC that all steps have been executed, meaning we are ready for new instructions
 }
 
 // Run program
