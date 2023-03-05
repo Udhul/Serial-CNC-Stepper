@@ -24,8 +24,8 @@
 #define	TPIN      0b00100000	// Toggle pin for router-spindle
 
 // Step pulse width:
-#define STEPPULSE	5           // Step pulse time (µs). Clock time > 0.5 µs (see L297 datasheet p. 7)	
-#define STEPTIME	1900        // Step time hold (between steps) (µs)
+#define STEPPULSE   5         // Step pulse time (µs). Clock time > 0.5 µs (see L297 datasheet p. 7)	
+#define STEPTIME    1900      // Step time hold (between steps) (µs)
 //-----------------------------------------------------------//
 
 //--------------------------INCLUDES--------------------------//
