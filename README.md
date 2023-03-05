@@ -42,6 +42,7 @@ The project involves adding a new microcontroller (AtMega328PU) between the PC a
 When the AtMega328PU MCU receives one line of gcode via serial communication, it executes it one line at a time. The MCU is responsible for converting coordinates to machine instructions and controlling the stepper motors. This is done by converting coordinates into the necessary relative movement on each axis and translating it into steps and directions for each motor. The motor setup is taken into account when calculating the step/direction signals, which are then sent to the motor controllers (L297).
 
 The L297 motor controller generates high-low patterns to switch the motor coils for each step, and the L298 motor driver allows current to flow through the motor coils. By working together, these components ensure precise and accurate control over the motion of the stepper motors.
+
 <img width="300" alt="Stepper Motor Controller signal" src="https://user-images.githubusercontent.com/126940798/222948679-c289ace8-6d8f-4e26-8a07-194f4ef8dead.png">
 
 (Source: https://www.st.com/en/motor-drivers/l297.html)
