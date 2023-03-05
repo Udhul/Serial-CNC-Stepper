@@ -37,9 +37,11 @@ The system components for this CNC system are:
 <img src="https://user-images.githubusercontent.com/126940798/222947505-961e6c68-5332-4232-bf7a-ee2d3f197f2e.png" width="33%" height="33%">
 
 ### How it Works:
-The project involves adding a new microcontroller (AtMega328PU) between the PC and motor controllers. This microcontroller serves as the trajectory planner and receives gcode directly from the PC. It stores information about motor to axes steps/unit, motor pin mapping, sensor inputs (such as endstops), and current positions.
+The project involves adding a microcontroller (AtMega328PU) between the PC and the motor controllers to control the stepper motors. The PC acts as the trajectory planner, where the gcode is loaded, and information on motor steps/unit and current positions is stored. When a line of gcode is read, the PC converts the coordinates into machine instructions (step, direction, enable, spindle) for controlling the stepper motors. This information is then encoded into two bytes and sent serially to the AtMega328PU MCU via the PC's RS232 interface. The information is encoded as shown below:
 
-When the AtMega328PU MCU receives one line of gcode via serial communication, it executes it one line at a time. The MCU is responsible for converting coordinates to machine instructions and controlling the stepper motors. This is done by converting coordinates into the necessary relative movement on each axis and translating it into steps and directions for each motor. The motor setup is taken into account when calculating the step/direction signals, which are then sent to the motor controllers (L297).
+<img width="337" alt="bit pattern" src="https://user-images.githubusercontent.com/126940798/222958688-9ea429d8-cb34-4651-b063-d3de79c442df.png">
+
+Once the data package is received, the AtMega328PU segregates the bits relevant to each control function and switches the output pins accordingly to execute a step-routine. The MCU uses information on motor pin mapping and sensor inputs to control the motion of the stepper motors by switching output pins connected to the L297 motor controllers.
 
 The L297 motor controller generates high-low patterns to switch the motor coils for each step, and the L298 motor driver allows current to flow through the motor coils. By working together, these components ensure precise and accurate control over the motion of the stepper motors.
 
@@ -49,21 +51,21 @@ The L297 motor controller generates high-low patterns to switch the motor coils 
 
 
 ### Benefits:
-The benefits of this approach over traditional parallel stepping include:
-
+The approach used in this project has several benefits over traditional parallel stepping, including:
 * Serial communication is more readily available on modern PCs and laptops.
 * Serial communication has higher bandwidth than the parallel printer port, allowing for more steps to be executed per second on higher resolution machines.
 * Serial communication is less susceptible to noise, and the use of acknowledgement and error-checking protocols ensures that the logical state of the system is more robust.
-* One-line-at-a-time execution allows for smoother motion and reduces the likelihood of missed steps or unwanted steps.
+* One-line-at-a-time execution allows for smoother motion per axis and reduces the likelihood of missed steps or unwanted steps.
 
 ## Limitations
-The AtMega328PU MCU is used in this project, which has limited output pins. As a result, only one step pin and one direction will be used (See pin-mapping). To direct steps to the relevant motor, an enable pin for each axis (x, y, z) is used. This means that only one axis can be stepped at a time. The active state of the enable pins determines which motor is currently being stepped on. As a consequence, cut-lines that require more than one axis to draw will be interpolated in a staircase pattern, based on the step/unit resolution. This may result in a loss of precision in certain cutting or drawing operations that require smooth, continuous motion across multiple axes.
+One limitation of this approach is that the AtMega328PU MCU has limited output pins. Therefore, only one step pin and one direction pin can be used, and an enable pin for each axis (x, y, z) is used to direct steps to the relevant motor. This means that only one axis can be stepped at a time, and the active state of the enable pins determines which motor is currently being stepped on. Consequently, cut-lines that require more than one axis to draw will be interpolated in a staircase pattern based on the step/unit resolution, which may result in a loss of precision in certain cutting or drawing operations that require smooth, continuous motion across multiple axes.
 
 <img width="400" src="https://user-images.githubusercontent.com/126940798/222950187-8206b198-2d66-490a-9d16-d8c251ed5831.png">
 
 
 ### Conclusion:
 The Serial-CNC-Stepper project showcases how a simple CNC router can be built with an alternative communication form that replaces traditional parallel stepping with serial communication and one-line-at-a-time execution. This approach offers several benefits over traditional parallel stepping, including greater availability, higher bandwidth, and greater robustness against noise and errors.
+
 
 
 ## Getting Started
