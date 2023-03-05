@@ -9,10 +9,10 @@
 #define UART_BAUD_RATE 	115200
 
 // ENDSTOP defines:
-#define ENDSTOP PIND        // End-stop readin on Port D (Input)
-#define XEND    0b00010000  // XEND input on PIN 4
-#define YEND    0b00100000  // YEND input on PIN 5
-#define ZEND    0b01000000  // ZEND input on PIN 6
+#define ENDSTOP PIND          // End-stop readin on Port D (Input)
+#define XEND    0b00010000    // XEND input on PIN 4
+#define YEND    0b00100000    // YEND input on PIN 5
+#define ZEND    0b01000000    // ZEND input on PIN 6
 
 // Stepport defines:
 #define STEPPORT  PORTC
@@ -150,7 +150,7 @@ void read_data()
   
   //---------- Read steps ---------- //
   // Remaining bits are steps to execute on the given axis in the given direction
-  ins_step	=	((c[0] & 0b00011111)<<8) + c[1];
+  ins_step = ((c[0] & 0b00011111)<<8) + c[1];
 }
 
   //---------- Execute steps function ---------- //
@@ -183,9 +183,9 @@ int main(void)
   STEPPORT &= ~TPIN;        // Start by pulling the toggle pin for the router spindle low
   
   // Regarding the ENDSTOP:
-  DDRD &=				0b10001011; // Change the direction for PD2,4-6 to inputs
-  EIMSK |=			0b00000001; // Enabler interrupt request on INT0 (datasheet p. 73)
-  EICRA |=			0b00000011; // Interrupt happens on rising edge of INT0 (datasheet p. 72)
+  DDRD   &=   0b10001011;   // Change the direction for PD2,4-6 to inputs
+  EIMSK  |=   0b00000001;   // Enabler interrupt request on INT0 (datasheet p. 73)
+  EICRA  |=   0b00000011;   // Interrupt happens on rising edge of INT0 (datasheet p. 72)
   
   sei();                    // Allow global interrupts
     
