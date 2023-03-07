@@ -81,6 +81,12 @@ To get started with this project, you will need the following:
 * Breakout board and Wires
 * Optional: 1 physical 3-axis CNC for the motors to control
 
+### Software
+* AVR Studio (For dependencies and building the code)
+* <avr/interrupt.h>
+* <util/delay.h>
+* "uart.h"
+
 ### AtMega328PU MCU pin-mapping
 <img width="50%" src="https://user-images.githubusercontent.com/126940798/222949327-0508a704-80ef-41af-b1f8-596c3a9cc2b3.png">
 
@@ -93,3 +99,6 @@ The components are wired as following (click to enlarge):
 Print Board Circuit Layout top and bottom (click to enlarge):
 
 <img width="200px" src="https://user-images.githubusercontent.com/126940798/222949695-15df5502-847f-4693-9d6c-d82c1f863a01.png">
+
+## Disclaimer
+Do not attempt to use this project for controlling live CNC machinery. It is meant for demonstration and learning purposes only. 
